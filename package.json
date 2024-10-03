@@ -1,0 +1,19 @@
+{
+  "name": "gulp-html-partials",
+  "version": "1.0.0",
+  "description": "A project using Gulp for HTML partials with live server.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "gulp",
+    "serve": "gulp serve",
+    "watch": "gulp watch",
+    "dev": "npm run build && npm run serve && npm run watch"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.27.7",
+    "gulp": "^4.0.2",
+    "gulp-file-include": "^2.3.0"
+  }
+}

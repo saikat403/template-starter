@@ -1,0 +1,43 @@
+@@include('_inc/head.html')
+@@include('partials/navbar.html')
+
+<main>
+    <section class="hero is-primary is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                        <div class="box">
+                            <h1 class="title has-text-centered">Email Verification</h1>
+                            <p class="subtitle has-text-centered">Please enter the verification code sent to your email.
+                            </p>
+                            <form action="" class="mt-5">
+                                <div class="field">
+                                    <label for="" class="label">Verification Code</label>
+                                    <div class="control has-icons-left">
+                                        <input type="text" placeholder="Enter your code" class="input" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fa fa-key"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <button class="button is-success is-fullwidth">
+                                        Verify Email
+                                    </button>
+                                </div>
+                            </form>
+                            <p class="has-text-centered mt-4">
+                                <a href="#">Resend verification code</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @@include('partials/footer.html')
+</main>
+
+@@include('_inc/_foot.html')
