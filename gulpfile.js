@@ -1,23 +1,30 @@
 const gulp = require('gulp');
 const fileInclude = require('gulp-file-include');
 const browserSync = require('browser-sync').create();
+const sass = require('gulp-sass')(require('sass')); // Import gulp-sass and sass
 
 // Task to include partials in HTML
 gulp.task('html', function () {
-    return gulp.src(['src/*.html']) // Source HTML files
+    return gulp.src(['src/*.html', 'src/admin/*.html']) // Include both root and admin HTML files
         .pipe(fileInclude({
             prefix: '@@', // Syntax for includes
             basepath: '@file' // Relative path for partials
         }))
-        .pipe(gulp.dest('dist')) // Output to dist folder
+        .pipe(gulp.dest(function (file) {
+            // Place HTML files from admin directory in the 'dist/admin/' folder
+            if (file.path.includes('src/admin/')) {
+                return 'dist/admin'; // Output to dist/admin folder for admin files
+            }
+            return 'dist'; // Other files go to the root dist folder
+        }))
         .pipe(browserSync.stream()); // Inject changes without a full page reload
 });
 
-// Task to copy CSS files to dist folder
-gulp.task('css', function () {
-    console.log("Copying CSS files...");  // Debugging statement
-    return gulp.src('src/css/**/*.css') // Source CSS files
-        .pipe(gulp.dest('dist/css')) // Output CSS files to dist/css
+// Task to compile SCSS to CSS
+gulp.task('scss', function () {
+    return gulp.src('src/scss/**/*.scss') // Source SCSS files
+        .pipe(sass().on('error', sass.logError)) // Compile SCSS to CSS and handle errors
+        .pipe(gulp.dest('dist/css')) // Output compiled CSS to dist/css
         .pipe(browserSync.stream()); // Inject changes without a full page reload
 });
 
@@ -27,10 +34,10 @@ gulp.task('assets', function () {
         .pipe(gulp.dest('dist/assets')); // Output assets files to dist/assets
 });
 
-// Watch task for changes in HTML, CSS, and asset files
+// Watch task for changes in HTML, SCSS, and asset files
 gulp.task('watch', function () {
     gulp.watch('src/**/*.html', gulp.series('html')); // Watch HTML files
-    gulp.watch('src/css/**/*.css', gulp.series('css')); // Watch CSS files
+    gulp.watch('src/scss/**/*.scss', gulp.series('scss')); // Watch SCSS files
     gulp.watch('src/assets/**/*', gulp.series('assets')); // Watch assets files
 });
 
@@ -43,12 +50,12 @@ gulp.task('serve', function () {
     });
 
     gulp.watch('src/**/*.html', gulp.series('html')); // Watch for HTML changes and rebuild
-    gulp.watch('src/css/**/*.css', gulp.series('css')); // Watch for CSS changes and rebuild
+    gulp.watch('src/scss/**/*.scss', gulp.series('scss')); // Watch for SCSS changes and rebuild
     gulp.watch('src/assets/**/*', gulp.series('assets')); // Watch for asset changes and rebuild
     gulp.watch('src/**/*.html').on('change', browserSync.reload); // Reload browser on HTML changes
-    gulp.watch('src/css/**/*.css').on('change', browserSync.reload); // Reload browser on CSS changes
+    gulp.watch('src/scss/**/*.scss').on('change', browserSync.reload); // Reload browser on SCSS changes
     gulp.watch('src/assets/**/*').on('change', browserSync.reload); // Reload browser on asset changes
 });
 
 // Default task to build, watch, and serve
-gulp.task('default', gulp.series('html', 'css', 'assets', 'serve', 'watch'));
+gulp.task('default', gulp.series('html', 'scss', 'assets', 'serve', 'watch'));

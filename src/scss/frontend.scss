@@ -1,0 +1,11 @@
+$color-primary: #333;
+$color-danger: #dc143c;
+
+body {
+    background-color: $color-danger;
+    font-family: monospace;
+
+    h1 {
+        color: #333;
+    }
+}
